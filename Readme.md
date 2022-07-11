@@ -1,1 +1,1 @@
-Forest fire Simulation using Bash
+Forest fire Simulation using Bash.
