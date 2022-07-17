@@ -1,2 +1,2 @@
 Forest fire Simulation using Bash.
-( funny Conway's Game of Life example )
+( funny non deterministic Conway's Game of Life example )
