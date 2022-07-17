@@ -1,34 +1,21 @@
 #!/bin/bash
 
-echo 'Hello dude, let s go simulé ton meilleur feu de forêt'
+echo 'Hello, this is a forest fire Simulation'
 
-read -p "Quel taille veux tu donner à ta forêt = " taille
+read -p "insert the size of your forest ! (We recommend 15 ) = " taille
 #read taille
 
-read -p "choisir l'abcisse du point de départ du feu compris entre 0 et $taille :  " PDx
-read -p "choisir l'ordonné dupoint de départ du feu compris entre 0 et $taille : " PDy
+read -p "insert absciss of the fire's starting point  between 0 and $taille :  " PDx
+read -p "insert ordinate of the fire's starting point between 0 and $taille : " PDy
 
 
 if [ "$PDx" -lt 0 ] || [  "$PDx" -ge "$taille" ]
 then
-	echo " le coordonnée x n'est pas correcte, choix aléatoire effectué"
 	PDx=$(( $RANDOM %$(($taille))))
-	if [ $PDy -lt 0 ] || [  $PDy -ge $taille ]	
-	then
-		echo "le coordonnée y n'est pas correcte, choix aléatoire effectué"
-		PDy=$(( $RANDOM %$(($taille))))
-	else
-		echo "le coordonée y est bon! merci !"
-	fi
-else
-	echo "le coordonée x est bon! merci !"
-	if [ $PDy -lt 0 ] || [  $PDy -ge $taille ]	
-	then
-		echo "le coordonnée y n'est pas correcte : choix aléatoire"
-		PDy=$(($RANDOM %$($taille)))
-	else
-		echo "le coordonée y est bon! merci !"
-	fi
+fi
+if [ $PDy -lt 0 ] || [  $PDy -ge $taille ]	
+then
+	PDy=$(( $RANDOM %$(($taille))))
 fi
 
 initState(){
@@ -149,6 +136,7 @@ updateForet()
 	startFireRandomly 1 10
 }
 printForet(){
+	echo "Don't press w ! Poseidon will get mad !!!"
 	for ((  a=0 ; a< "$n" ; a++ ));
 	do
  		for ((  b=0 ; b < "$n" ; b++ ));
@@ -188,40 +176,34 @@ startFireRandomly()
         fi
 }
 pompier(){
+
 local ti=$(($RANDOM %$(($taille-1))))
-echo $ti
-echo ${arr[1,1]}
-echo
 for (( i=0 ; i<$n ; i++ ));
 do
-	arr[$i,$ti]= 🚁
-	if [ $i -ne 0 ]
-	then
-	arr[$(($i-1)),$ti]=💦
-	fi
-	if [ $(($i-1)) -ne 0 ]
-	then
-	arr[$(($i-2)),$ti]=💦
-	fi
-	if [ $(($i-2)) -ne 0 ]
-	then
-	arr[(($i-3)),$ti]=🌿 
-	fi
+	echo "BEHOLD POSEIDON WAVE !"
+	arr[$ti,$i]=🌊
+	waveLength=10
+	for (( T3=1 ; T3<$waveLength ; T3++ ));
+	do
+	arr[$ti,$(($i-$T3))]=💦
+	arr[$ti,$(($i-$(($waveLength-1))))]="🌿" 
+	done
 	printForet
-	echo
-	echo
-	sleep 0.5
+	sleep 0.1
+	clear
+	if [ $((i+1)) -eq $n ]
+	then
+		echo "BEHOLD POSEIDON WAVE !"
+		arr[$ti,$i]=💦
+		for (( j=$(($i-$waveLength)) ; j<$n ; j++  ))
+		do
+			arr[$ti,$j]=🌿
+			printForet
+			sleep 0.1
+			clear
+		done
+	fi
 done 
-arr[2,$ti]=🌿
-	printForet
-	sleep 0.5
-arr[1,$ti]=🌿
-	printForet
-	sleep 0.5
-arr[0,$ti]=🌿
-	printForet
-	sleep 0.5
-
 }
 
 main(){
@@ -229,20 +211,17 @@ main(){
 	n=$taille
 	initState arr
 	startFire
-	printForet
-	#pompier
 	while true
 	do 
-		
 		printForet
-		updateForet 8 10
-		#read -t 1 -s -n 1 key 
-		#if [ $key == "s" ]; then 
-		#echo "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa"
-		#	pompier
-		#fi
-		sleep 0.2
+		updateForet 5 10
+		read -t 1 -s -n 1 key 
+		sleep 0.1
 		clear
+		if [ $key == "w" ]; then 
+		clear
+		pompier
+		fi
 	done
 }
 main 2>>probleme.txt
