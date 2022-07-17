@@ -193,15 +193,17 @@ do
 	clear
 	if [ $((i+1)) -eq $n ]
 	then
-		echo "BEHOLD POSEIDON WAVE !"
+		
 		arr[$ti,$i]=💦
 		for (( j=$(($i-$waveLength)) ; j<$n ; j++  ))
 		do
+			echo "BEHOLD POSEIDON WAVE !"
 			arr[$ti,$j]=🌿
 			printForet
 			sleep 0.1
 			clear
 		done
+		printForet
 	fi
 done 
 }
@@ -216,12 +218,12 @@ main(){
 		printForet
 		updateForet 5 10
 		read -t 1 -s -n 1 key 
-		sleep 0.1
-		clear
 		if [[ $key = "w" ]]; then 
 		clear
 		pompier
 		fi
+		sleep 0.1
+		clear
 	done
 }
 main 2>>probleme.txt
